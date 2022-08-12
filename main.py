@@ -5,6 +5,7 @@ import typer
 
 app=typer.Typer()
 
+@app.command("run")
 def main(extension:str,directory:Optional[str]=typer.Argument(None,help="Dossier dans lequel chercher"),delete:bool=typer.Option(False,help="Supprimer les fichiers trouvés")):
     """
     Affiche les fichiers trouvés avec l'extension donné
@@ -31,5 +32,14 @@ def main(extension:str,directory:Optional[str]=typer.Argument(None,help="Dossier
         typer.secho(f"Fichier trouvés l'extension {extension}",bg=typer.colors.BLUE,fg=typer.colors.BRIGHT_BLUE)
         for file in files:
             typer.echo(file)
+
+@app.command()
+def search(extension:str):
+    main(extension=extension,directory=None,delete=False)
+
+@app.command()
+def delete(extension:str):
+    main(extension=extension,directory=None,delete=True)
+
 if __name__=="__main__":
-    typer.run(main)
+    app()
